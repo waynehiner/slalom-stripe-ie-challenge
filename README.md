@@ -15,3 +15,9 @@ git pull
 ```
 in your local directory.
 You can also perform the git operations through most IDEs using the instructions for that IDE.
+```
+Suggested file naming convention:
+{your_name}-challenge{number}-{filename}.{file_extension}
+Example:
+Evan_Fiore-challenge01-server.js
+```
