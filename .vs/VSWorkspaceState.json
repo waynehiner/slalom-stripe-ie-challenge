@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\code",
+    "\\code\\client",
+    "\\code\\client\\assets",
+    "\\code\\client\\assets\\js",
+    "\\code\\server",
+    "\\screenshots",
+    "\\test",
+    "\\test\\api-tests"
+  ],
+  "SelectedNode": "\\code\\config.json",
+  "PreviewInSolutionExplorer": false
+}
