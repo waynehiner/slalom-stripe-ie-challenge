@@ -5,11 +5,8 @@
     "\\code\\client",
     "\\code\\client\\assets",
     "\\code\\client\\assets\\js",
-    "\\code\\server",
-    "\\screenshots",
-    "\\test",
-    "\\test\\api-tests"
+    "\\code\\server"
   ],
-  "SelectedNode": "\\code\\config.json",
+  "SelectedNode": "\\code\\server\\server.js",
   "PreviewInSolutionExplorer": false
 }

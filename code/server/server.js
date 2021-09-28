@@ -135,14 +135,14 @@ app.get('/videos', (req, res) => {
 
 // Challenge #2 | Payment Intent
 app.post('/create-payment-intent', async (req, res) => {
-    const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
-    const {paymentMethodType, currency, amount} = req.body;
+       
     try {
+        const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
+        const { paymentMethodType, currency, amount } = req.body;
         const paymentIntent = await stripe.paymentIntents.create({
-            payment_method_types: [paymentMethodType],
-            currency: currency,
-            amount: amount,
-            //metadata needed from items.json
+            amount: amount.value,
+            currency: currency.value,
+            payment_method_types: [paymentMethodType.value],
         });
         res.json({ clientSecret: paymentIntent.client_secret });
 

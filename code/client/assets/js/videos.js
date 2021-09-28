@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle the PaymentIntent
     const amount = document.getElementsByClassName("summary-price summary-total");
     const form = document.querySelector('#payment-form');
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('click', async (e) => {
         addMessage('Submitting details to the backend');
         e.preventDefault();
         // Create PaymentIntent on the Server
