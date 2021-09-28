@@ -216,20 +216,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     var cardElement = elements.create('card');
     cardElement.mount("#card-element");
 
-    //cardElement.on("change", function (event) {
-    //    // Disable the Pay button if there are no card details in the Element
-    //    document.querySelector("button").disabled = event.empty;
-    //    document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
-    //});
+    // Disable button until all of cardElement is filled out
+    function checkIfCardComplete(elementsEvent) {
+        if (elementsEvent.complete) {
+            document.getElementById('submit').removeAttribute('disabled');
+        } else {
+            document.getElementById('submit').disabled = true;
+        }
+    }
+    cardElement.on('change', function (event) {
+        checkIfCardComplete(event);
+    });
 
     // Handle the PaymentIntent
-    const amount = document.getElementsByClassName("summary-price summary-total");
-    const form = document.querySelector('#payment-form');
-    form.addEventListener('click', async (e) => {
-        addMessage('Submitting details to the backend');
+    //const amount = document.getElementById("summary-price");
+    const btn = document.getElementById('submit');
+    const newtotal = updateSummaryTable.total.value
+    btn.addEventListener('click', async (e) => {
+        document.getElementById('spinner').classList.remove('hidden');
+        document.getElementById('submit').disabled = true;
+        document.getElementById('button-text').innerText = '';
         e.preventDefault();
         // Create PaymentIntent on the Server
-        const {clientSecret} = await fetch('/create-payment-intent', {
+        const { clientSecret } = await fetch('/create-payment-intent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -237,14 +246,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             body: JSON.stringify({
                 paymentMethodType: 'card',
                 currency: 'usd',
-                amount: '1500',
+                amount: newtotal * 100,
             }),
-        }).then(r => r.json());
+        })
+            .then((response) => response.json());
+  
+        //adddMessage('PaymentIntent created!');
 
-        adddMessage('PaymentIntent created!');
-
-        const nameInput = document.querySelector('#name');
-        const emailInput = document.querySelector('#email');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
         const { paymentIntent } = await stripe.confirmCardPayment(
             clientSecret, {
                 payment_method: {
@@ -256,7 +266,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         )
-        addMessage(`PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
+        orderComplete();
+        //document.getElementById('payment-id').textContent = paymentIntent.id;
+
+
+        // Create anchor element.
+        var a = document.createElement('a');
+
+        // Set the href property.
+        a.target = '_blank';
+        a.href = "https://dashboard.stripe.com/test/payments/" + paymentIntent.id;
+        a.innerText = paymentIntent.id;
+
+        // Append the anchor element to the body.
+        var payment = document.getElementById('payment-id');
+        payment.appendChild(a);
+
+        //addMessage(`PaymentIntent (${paymentIntent.id}): ${paymentIntent.status}`);
     });
 });
 
